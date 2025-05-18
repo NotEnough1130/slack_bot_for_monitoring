@@ -1,11 +1,14 @@
-from datetime import datetime
 import re
+from datetime import datetime
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 
-SLACK_BOT_TOKEN = "xxx"
-SLACK_APP_TOKEN = "xxx"
+SLACK_BOT_TOKEN = "xxx" #token for authenticate to workspace
+SLACK_APP_TOKEN = "xxx" #token for allow this app to use platform feature (slack event API)
 
+app = App(token=SLACK_BOT_TOKEN)
+
+#Dict to translate channel id and name
 dict_channel_id={
     'C08SFMKQZKR' : '#system-log'
 }
@@ -14,8 +17,7 @@ dict_channel_name={
     '#system-log' : 'C08SFMKQZKR'
 }
 
-app = App(token=SLACK_BOT_TOKEN)
-
+#Step to ackowneldge app support
 def ack_app_support(channel, ts, text, client):
     client.reactions_add(
             channel=channel,
@@ -26,6 +28,7 @@ def ack_app_support(channel, ts, text, client):
     client.chat_postMessage(channel=channel, text=f'app support has been ack of this issue, stay turn!')
     return 0
 
+#Funtion to handle message in #system-log channel
 def handle_risk_system_error(text, channel, ts, client):
     rm_pattern = r"Risk system report process on (\d{4}-\d{2}-\d{2}) \[[A-Z]{3}\] completed successfully"
     clear_text=re.sub(r"[^A-Za-z ]", "", text.lower())
@@ -40,6 +43,7 @@ def handle_risk_system_error(text, channel, ts, client):
     else:
         return 0
 
+#divide body message from API to usful information
 def get_info(body):
     event = body.get("event", {})
     channel = event.get("channel")
@@ -47,6 +51,7 @@ def get_info(body):
     text = event.get("text")
     return channel, ts, text
 
+#all message route
 @app.event("message")
 def handle_message_events(body, logger, client):
     channel, ts, text = get_info(body)
@@ -54,6 +59,7 @@ def handle_message_events(body, logger, client):
         return handle_risk_system_error(text, channel, ts, client)
     return 0
 
+#app_mention route 
 @app.event("app_mention")
 def handle_mention_events(body, logger, client):
     channel, ts, text = get_info(body)

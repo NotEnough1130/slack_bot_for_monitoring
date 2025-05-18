@@ -81,12 +81,12 @@ It forwards the message to #app-support-request-logs with a timestamp for visibi
 
 It posts a follow-up message in the original channel to confirm that app support is aware and investigating.
 
-![Bot Demo](img/from_system_log.jpg)
+![Bot Demo](img/from_app_support_request_log.jpg)
 
 🚫 Other Messages:
 Messages that don't match any success or failure patterns are ignored
 
-##Futher Development
+## 🎯Futher Development
 
 - Adding function to handle multiple pm's channels request
 - Link with third party incident app

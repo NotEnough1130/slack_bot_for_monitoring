@@ -77,7 +77,16 @@ The bot reacts with an 👀 emoji.
 
 It forwards the message to #app-support-request-logs with a timestamp for visibility.
 
+![Bot Demo](img/from_system_log.jpg)
+
 It posts a follow-up message in the original channel to confirm that app support is aware and investigating.
+
+![Bot Demo](img/from_system_log.jpg)
 
 🚫 Other Messages:
 Messages that don't match any success or failure patterns are ignored
+
+##Futher Development
+
+- Adding function to handle multiple pm's channels request
+- Link with third party incident app
